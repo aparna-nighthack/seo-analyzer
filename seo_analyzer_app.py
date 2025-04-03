@@ -25,7 +25,8 @@ load_dotenv()
 class UsageTracker:
     def __init__(self):
         """Initialize MongoDB connection"""
-        mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+        # mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+        mongodb_uri = st.secrets["MONGODB_URI"]
         if not mongodb_uri:
             raise ValueError("MongoDB URI not found in environment variables")
         self.client = MongoClient(mongodb_uri)
@@ -104,7 +105,8 @@ class UsageTracker:
 
 class SEOAnalyzer:
     def __init__(self):
-        openai_api_key = os.getenv("OPENAI_API_KEY")
+        # openai_api_key = os.getenv("OPENAI_API_KEY")
+        openai_api_key = st.secrets["OPENAI_API_KEY"]
         if not openai_api_key:
             st.error("OpenAI API key not found! Check your Streamlit secrets.")
             raise ValueError("Missing OpenAI API key")

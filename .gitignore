@@ -1,0 +1,5 @@
+.env
+.secrets.toml
+seo_reports/
+__pycache__/
+*.pyc

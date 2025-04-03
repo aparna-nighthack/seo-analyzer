@@ -26,6 +26,8 @@ class UsageTracker:
     def __init__(self):
         """Initialize MongoDB connection"""
         mongodb_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/")
+        if not mongodb_uri:
+            raise ValueError("MongoDB URI not found in environment variables")
         self.client = MongoClient(mongodb_uri)
         self.db = self.client["seo_analyzer"]
         self.usage_collection = self.db["organization_usage"]
@@ -102,7 +104,12 @@ class UsageTracker:
 
 class SEOAnalyzer:
     def __init__(self):
-        self.llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+        openai_api_key = os.getenv("OPENAI_API_KEY")
+        if not openai_api_key:
+            st.error("OpenAI API key not found! Check your Streamlit secrets.")
+            raise ValueError("Missing OpenAI API key")
+        # self.llm = ChatOpenAI(model="gpt-4o", api_key=os.getenv("OPENAI_API_KEY"))
+        self.llm = ChatOpenAI(model="gpt-4o", api_key=openai_api_key)
         self.setup_tools()
         self.setup_agent()
         self.setup_prompts()
